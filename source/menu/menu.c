@@ -16,6 +16,7 @@
 void menu_init(void){
     Menu_id = 100;
     LCD_clear();
+    menu_switch();
 }
 
 void menu_switch(void){
@@ -41,6 +42,8 @@ void menu_switch_loop(unsigned char is_left){
     }else{
         Menu_id = (Menu_id >= max_index) ? 100 : Menu_id + 10;
     }
+
+    menu_switch();
 }
 
 void menu(void){
@@ -79,6 +82,4 @@ void menu(void){
     }else{
         key_flag = 1;
     }
-
-    menu_switch();
 }

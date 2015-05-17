@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   MENU                                                                  05/17/2015 19:11:55 PAGE 1   
+C51 COMPILER V9.00   MENU                                                                  05/17/2015 19:37:51 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MENU
@@ -25,79 +25,80 @@ line level    source
   16          void menu_init(void){
   17   1          Menu_id = 100;
   18   1          LCD_clear();
-  19   1      }
-  20          
-  21          void menu_switch(void){
-  22   1          unsigned char x = 0;
-  23   1          unsigned char y = 5;
-  24   1          unsigned int index = Menu_id / 10  - 10;
-  25   1          unsigned char len = strlen(menu_text[index]);
-  26   1      
-  27   1          if(len <= 14){ // 屏幕一行最多显示 14 个字符
-  28   2              x = (LCD_WIDTH - len * 6) / 2; // 居中显示
-  29   2          }
-  30   1      
-  31   1          LCD_draw_pic(26, 1, 32, 32, menu_icon[index]);
-  32   1          LCD_draw_string_ascil_6x8(0, y, "              "); // 绘制 14 个空格，防止上次文字的残�
+  19   1          menu_switch();
+  20   1      }
+  21          
+  22          void menu_switch(void){
+  23   1          unsigned char x = 0;
+  24   1          unsigned char y = 5;
+  25   1          unsigned int index = Menu_id / 10  - 10;
+  26   1          unsigned char len = strlen(menu_text[index]);
+  27   1      
+  28   1          if(len <= 14){ // 屏幕一行最多显示 14 个字符
+  29   2              x = (LCD_WIDTH - len * 6) / 2; // 居中显示
+  30   2          }
+  31   1      
+  32   1          LCD_draw_pic(26, 1, 32, 32, menu_icon[index]);
+  33   1          LCD_draw_string_ascil_6x8(0, y, "              "); // 绘制 14 个空格，防止上次文字的残�
              -�
-  33   1          LCD_draw_string_ascil_6x8(x, y, menu_text[index]);
-  34   1      }
-  35          
-  36          void menu_switch_loop(unsigned char is_left){
-  37   1          unsigned char max_index = 100 + MENU_COUNT * 10 - 10;
-  38   1      
-  39   1          if(is_left){
-  40   2              Menu_id = (Menu_id <= 100) ? max_index : Menu_id - 10;
-  41   2          }else{
-  42   2              Menu_id = (Menu_id >= max_index) ? 100 : Menu_id + 10;
-  43   2          }
-  44   1      }
-  45          
-  46          void menu(void){
-  47   1          static bit key_flag = 1;
-  48   1      
-  49   1          if(KEY_LEFT){
-  50   2              if(key_flag){
-  51   3                  key_flag = 0;
-  52   3                  menu_switch_loop(1);
-  53   3              }
-  54   2          }else if(KEY_RIGHT){
-C51 COMPILER V9.00   MENU                                                                  05/17/2015 19:11:55 PAGE 2   
+  34   1          LCD_draw_string_ascil_6x8(x, y, menu_text[index]);
+  35   1      }
+  36          
+  37          void menu_switch_loop(unsigned char is_left){
+  38   1          unsigned char max_index = 100 + MENU_COUNT * 10 - 10;
+  39   1      
+  40   1          if(is_left){
+  41   2              Menu_id = (Menu_id <= 100) ? max_index : Menu_id - 10;
+  42   2          }else{
+  43   2              Menu_id = (Menu_id >= max_index) ? 100 : Menu_id + 10;
+  44   2          }
+  45   1      
+  46   1          menu_switch();
+  47   1      }
+  48          
+  49          void menu(void){
+  50   1          static bit key_flag = 1;
+  51   1      
+  52   1          if(KEY_LEFT){
+  53   2              if(key_flag){
+  54   3                  key_flag = 0;
+C51 COMPILER V9.00   MENU                                                                  05/17/2015 19:37:51 PAGE 2   
 
-  55   2              if(key_flag){
-  56   3                  key_flag = 0;
-  57   3                  menu_switch_loop(0);
-  58   3              }
-  59   2          }else if(KEY_START){
-  60   2              if(key_flag){
-  61   3                  key_flag = 0;
-  62   3                  switch(Menu_id){
-  63   4                      case 100:
-  64   4                          racing_init();
-  65   4                          return;
-  66   4                          break;
-  67   4                      case 110:
-  68   4                          about_init();
-  69   4                          return;
-  70   4                          break;
-  71   4                  }
-  72   3              }
-  73   2          }else if(KEY_EXIT){
-  74   2              if(key_flag){
-  75   3                  menu_init();
-  76   3                  key_flag = 0;
-  77   3                  return;
-  78   3              }
-  79   2          }else{
-  80   2              key_flag = 1;
-  81   2          }
-  82   1      
-  83   1          menu_switch();
-  84   1      }
+  55   3                  menu_switch_loop(1);
+  56   3              }
+  57   2          }else if(KEY_RIGHT){
+  58   2              if(key_flag){
+  59   3                  key_flag = 0;
+  60   3                  menu_switch_loop(0);
+  61   3              }
+  62   2          }else if(KEY_START){
+  63   2              if(key_flag){
+  64   3                  key_flag = 0;
+  65   3                  switch(Menu_id){
+  66   4                      case 100:
+  67   4                          racing_init();
+  68   4                          return;
+  69   4                          break;
+  70   4                      case 110:
+  71   4                          about_init();
+  72   4                          return;
+  73   4                          break;
+  74   4                  }
+  75   3              }
+  76   2          }else if(KEY_EXIT){
+  77   2              if(key_flag){
+  78   3                  menu_init();
+  79   3                  key_flag = 0;
+  80   3                  return;
+  81   3              }
+  82   2          }else{
+  83   2              key_flag = 1;
+  84   2          }
+  85   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    328    ----
+   CODE SIZE        =    329    ----
    CONSTANT SIZE    =    290    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

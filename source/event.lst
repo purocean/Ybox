@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   EVENT                                                                 05/17/2015 19:11:55 PAGE 1   
+C51 COMPILER V9.00   EVENT                                                                 05/17/2015 19:37:51 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE EVENT
@@ -62,7 +62,7 @@ line level    source
   52   2          }
   53   1      
   54   1          if(!P_RIGHT && timer_delay_ms(9) && !P_RIGHT){
-C51 COMPILER V9.00   EVENT                                                                 05/17/2015 19:11:55 PAGE 2   
+C51 COMPILER V9.00   EVENT                                                                 05/17/2015 19:37:51 PAGE 2   
 
   55   2              KEY_RIGHT = 1;
   56   2          }else{
