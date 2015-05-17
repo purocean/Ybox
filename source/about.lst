@@ -1,0 +1,57 @@
+C51 COMPILER V9.00   ABOUT                                                                 05/17/2015 19:11:55 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE ABOUT
+OBJECT MODULE PLACED IN about.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE about\about.c BROWSE DEBUG OBJECTEXTEND PRINT(.\about.lst) OBJECT(about.obj
+                    -)
+
+line level    source
+
+   1          /* 关于
+   2           * 洋子
+   3           * purocean@gmail.com
+   4           * 2015年5月17日00:16:46
+   5           */
+   6          
+   7          #include <reg51.h>
+   8          #include "../inc/event/event.h"
+   9          #include "../inc/lcd/nokia_5110.h"
+  10          #include "about.h"
+  11          #include "about_data.h"
+  12          #include "../menu/menu.h"
+  13          
+  14          void about_init(void){
+  15   1          Menu_id = 900;
+  16   1          LCD_clear();
+  17   1      }
+  18          
+  19          void about(void){
+  20   1          static bit key_flag = 1;
+  21   1      
+  22   1          if(KEY_EXIT){
+  23   2              if(key_flag){
+  24   3                  menu_init();
+  25   3                  key_flag = 0;
+  26   3                  return;
+  27   3              }
+  28   2          }else{
+  29   2              key_flag = 1;
+  30   2          }
+  31   1      
+  32   1          LCD_draw_pic(18, 0, 48, 48, about_img);
+  33   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     45    ----
+   CONSTANT SIZE    =    288    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

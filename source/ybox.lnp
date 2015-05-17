@@ -1,0 +1,10 @@
+"STARTUP.obj",
+"main.obj",
+"nokia_5110.obj",
+"menu.obj",
+"timer.obj",
+"event.obj",
+"about.obj",
+"racing.obj" 
+TO "ybox" 
+RAMSIZE(256) 

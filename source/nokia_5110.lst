@@ -1,0 +1,224 @@
+C51 COMPILER V9.00   NOKIA_5110                                                            05/17/2015 19:11:55 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE NOKIA_5110
+OBJECT MODULE PLACED IN nokia_5110.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE inc\lcd\nokia_5110.c BROWSE DEBUG OBJECTEXTEND PRINT(.\nokia_5110.lst) OBJE
+                    -CT(nokia_5110.obj)
+
+line level    source
+
+   1          /**
+   2           * 诺基亚 LCD 5110 驱动
+   3           * 洋子
+   4           * purocean@gmail.com
+   5           * 2015年5月10日17:26:22
+   6           */
+   7          
+   8          #include <reg51.h>
+   9          #include "font_ascil.h"
+  10          #include "nokia_5110.h"
+  11          
+  12          
+  13          // 延时一段时间
+  14          void _LCD_delay_awhile(void){
+  15   1          unsigned int i;
+  16   1          for(i = 5000; i > 0; --i);
+  17   1      }
+  18          
+  19          // 初始化 LCD
+  20          void LCD_init(void){
+  21   1          LCD_RST = 0; // 产生一个让LCD复位的低电平脉冲
+  22   1          _LCD_delay_awhile();
+  23   1          LCD_RST = 1;
+  24   1      
+  25   1          LCD_CE = 0; // 关闭 LCD
+  26   1          _LCD_delay_awhile();
+  27   1          LCD_CE = 1; // 开启 LCD
+  28   1          _LCD_delay_awhile();
+  29   1      
+  30   1          LCD_write_byte(0x21, 0); // 使用扩展命令设置 LCD 模式
+  31   1          LCD_write_byte(0x9c, 0); // 设置偏置电压
+  32   1          LCD_write_byte(0x07, 0); // 温度校正
+  33   1          LCD_write_byte(0x17, 0); // 1:48
+  34   1          LCD_write_byte(0x20, 0); // 使用基本命令
+  35   1      
+  36   1          LCD_clear(); // 清屏
+  37   1          LCD_write_byte(0x0c, 0); // 设定显示模式，正常显示
+  38   1          LCD_CE = 0; // 关闭LCD
+  39   1      }
+  40          
+  41          // 清屏
+  42          void LCD_clear(void){
+  43   1          unsigned int i;
+  44   1      
+  45   1          LCD_set_pos(0, 0);
+  46   1      
+  47   1          for(i = LCD_WIDTH * LCD_HEIGHT; i > 0; --i){
+  48   2              LCD_write_byte(0x00, 1);
+  49   2          }
+  50   1      }
+  51          
+  52          /**
+  53           * 设置坐标
+  54           * @param X 0-83
+C51 COMPILER V9.00   NOKIA_5110                                                            05/17/2015 19:11:55 PAGE 2   
+
+  55           * @param Y 0-5
+  56           */
+  57          void LCD_set_pos(unsigned char x, unsigned char y){
+  58   1          if(x >= LCD_WIDTH){
+  59   2              // x = 0;
+  60   2              return;
+  61   2          }
+  62   1      
+  63   1          if(y >= LCD_ROW){
+  64   2              // y = 0;
+  65   2              return;
+  66   2          }
+  67   1      
+  68   1          LCD_write_byte(0x80 | x, 0);
+  69   1          LCD_write_byte(0x40 | y, 0);
+  70   1      }
+  71          
+  72          
+  73          /**
+  74           * 画字符
+  75           * @param c 字符
+  76           */
+  77          void LCD_draw_char_6x8(unsigned char c){
+  78   1          unsigned char line;
+  79   1      
+  80   1          c -= 32;
+  81   1          for(line = 0; line < LCD_ROW; line++){
+  82   2              LCD_write_byte(font_ascii_6x8[c][line], 1);
+  83   2          }
+  84   1      }
+  85          
+  86          /**
+  87           * 画 ASCIL 字符串
+  88           * @param x
+  89           * @param y
+  90           * @param s
+  91           */
+  92          void LCD_draw_string_ascil_6x8(unsigned char x, unsigned char y, char *s){
+  93   1          LCD_set_pos(x, y);
+  94   1      
+  95   1          while(*s){
+  96   2              LCD_draw_char_6x8(*s);
+  97   2              ++s;
+  98   2          }
+  99   1      }
+ 100          
+ 101          /**
+ 102           * 画整数
+ 103           * @param x
+ 104           * @param y
+ 105           * @param num
+ 106           */
+ 107          void LCD_draw_int_6x8(unsigned char x, unsigned char y, long num){
+ 108   1          unsigned char temp[11];
+ 109   1          char i = 0;
+ 110   1      
+ 111   1          LCD_set_pos(x, y);
+ 112   1      
+ 113   1          if(num < 0){
+ 114   2              num = -num;
+ 115   2              LCD_draw_char_6x8('-');
+ 116   2          }else{
+C51 COMPILER V9.00   NOKIA_5110                                                            05/17/2015 19:11:55 PAGE 3   
+
+ 117   2              LCD_draw_char_6x8(' ');
+ 118   2          }
+ 119   1      
+ 120   1          if(num == 0){
+ 121   2              LCD_draw_char_6x8('0');
+ 122   2              return;
+ 123   2          }
+ 124   1      
+ 125   1          while(num){
+ 126   2              temp[i] = '0' + (num % 10);
+ 127   2              num /= 10;
+ 128   2              ++i;
+ 129   2          }
+ 130   1      
+ 131   1          for(--i; i >= 0; --i){
+ 132   2              LCD_draw_char_6x8(temp[i]);
+ 133   2          }
+ 134   1      }
+ 135          
+ 136          /**
+ 137           * 绘制图片
+ 138           * @param x
+ 139           * @param y
+ 140           * @param w   图片宽
+ 141           * @param h   图片高
+ 142           * @param map 图片数组
+ 143           */
+ 144          void LCD_draw_pic(unsigned char x, unsigned char y, unsigned char w,
+ 145                  unsigned char h, unsigned char *map){
+ 146   1          unsigned int i, n;
+ 147   1          unsigned char row;
+ 148   1      
+ 149   1          if(h % 8 == 0){
+ 150   2              row = h / 8; // 计算位图所占行数
+ 151   2          }else{
+ 152   2              row = h / 8 + 1;
+ 153   2          }
+ 154   1      
+ 155   1          for(n = 0; n < row; ++n){
+ 156   2      
+ 157   2              LCD_set_pos(x, y);
+ 158   2              for(i = 0; i < w; ++i){
+ 159   3                  LCD_write_byte(map[i + n * w], 1);
+ 160   3              }
+ 161   2      
+ 162   2              ++y;
+ 163   2          }
+ 164   1      }
+ 165          
+ 166          /**
+ 167           * 写数据到 LCD
+ 168           * @param dat    数据
+ 169           * @param command 命令 0 或者 1
+ 170           */
+ 171          void LCD_write_byte(unsigned char dat, unsigned char command){
+ 172   1          unsigned char i;
+ 173   1          LCD_CE = 0;
+ 174   1      
+ 175   1          if(command == 0){
+ 176   2              LCD_DC = 0; // 传送命令到 LCD
+ 177   2          }else{
+ 178   2              LCD_DC = 1; // 传送绘制数据到 LCD
+C51 COMPILER V9.00   NOKIA_5110                                                            05/17/2015 19:11:55 PAGE 4   
+
+ 179   2          }
+ 180   1      
+ 181   1          for(i = 8; i > 0; --i){
+ 182   2              if(dat & 0x80){
+ 183   3                  SDIN = 1;
+ 184   3              }else{
+ 185   3                  SDIN = 0;
+ 186   3              }
+ 187   2      
+ 188   2              SCLK = 0;
+ 189   2              dat <<=  1;
+ 190   2              SCLK = 1;
+ 191   2          }
+ 192   1      
+ 193   1          LCD_CE = 1;
+ 194   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    559    ----
+   CONSTANT SIZE    =    552    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      38
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
