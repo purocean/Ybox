@@ -284,7 +284,7 @@
             <uAregs>0</uAregs>
             <UseInterruptVector>1</UseInterruptVector>
             <Fuzzy>3</Fuzzy>
-            <Optimize>8</Optimize>
+            <Optimize>9</Optimize>
             <WarningLevel>2</WarningLevel>
             <SizeSpeed>1</SizeSpeed>
             <ObjectExtend>1</ObjectExtend>
@@ -445,46 +445,6 @@
               <FileName>about_data.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\about\about_data.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>racing</GroupName>
-          <Files>
-            <File>
-              <FileName>racing.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\racing\racing.c</FilePath>
-            </File>
-            <File>
-              <FileName>racing.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\racing\racing.h</FilePath>
-            </File>
-            <File>
-              <FileName>racing_data.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\racing\racing_data.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>trex</GroupName>
-          <Files>
-            <File>
-              <FileName>trex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\trex\trex.c</FilePath>
-            </File>
-            <File>
-              <FileName>trex.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\trex\trex.h</FilePath>
-            </File>
-            <File>
-              <FileName>trex_data.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\trex\trex_data.h</FilePath>
             </File>
           </Files>
         </Group>
