@@ -5,6 +5,6 @@
 "timer.obj",
 "event.obj",
 "about.obj",
-"racing.obj" 
+"mine.obj" 
 TO "ybox" 
 RAMSIZE(256) 

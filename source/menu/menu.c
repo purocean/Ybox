@@ -11,39 +11,26 @@
 #include "menu.h"
 #include "menu_data.h"
 #include "../about/about.h"
-#include "../racing/racing.h"
+#include "../mine/mine.h"
+
+enum FID Func_id = MENU;
+unsigned char menu_id = MENU_COUNT - 1;
 
 void menu_init(void){
-    Menu_id = 100;
+    Func_id = MENU;
     LCD_clear();
     menu_switch();
 }
 
 void menu_switch(void){
-    unsigned char x = 0;
-    unsigned char y = 5;
-    unsigned int index = Menu_id / 10  - 10;
-    unsigned char len = strlen(menu_text[index]);
+    unsigned char x;
+    unsigned char len = strlen(menu_text[menu_id]);
 
-    if(len <= 14){ // 屏幕一行最多显示 14 个字符
-        x = (LCD_WIDTH - len * 6) / 2; // 居中显示
-    }
+    x = len <= 14 ? (LCD_WIDTH - len * 6) / 2 : 0; // 屏幕一行最多显示 14 个字符, 居中显示
 
-    LCD_draw_pic(26, 1, 32, 32, menu_icon[index]);
-    LCD_draw_string_ascil_6x8(0, y, "              "); // 绘制 14 个空格，防止上次文字的残留
-    LCD_draw_string_ascil_6x8(x, y, menu_text[index]);
-}
-
-void menu_switch_loop(unsigned char is_left){
-    unsigned char max_index = 100 + MENU_COUNT * 10 - 10;
-
-    if(is_left){
-        Menu_id = (Menu_id <= 100) ? max_index : Menu_id - 10;
-    }else{
-        Menu_id = (Menu_id >= max_index) ? 100 : Menu_id + 10;
-    }
-
-    menu_switch();
+    LCD_draw_pic(26, 1, 32, 32, menu_icon[menu_id]);
+    LCD_draw_string_ascil_6x8(0, 5, "              "); // 绘制 14 个空格，防止上次文字的残留
+    LCD_draw_string_ascil_6x8(x, 5, menu_text[menu_id]);
 }
 
 void menu(void){
@@ -52,33 +39,36 @@ void menu(void){
     if(KEY_LEFT){
         if(key_flag){
             key_flag = 0;
-            menu_switch_loop(1);
+
+            menu_id = (menu_id <= 0) ? MENU_COUNT - 1 : menu_id - 1;
+            menu_switch();
         }
     }else if(KEY_RIGHT){
         if(key_flag){
             key_flag = 0;
-            menu_switch_loop(0);
+
+            menu_id = (menu_id >= MENU_COUNT - 1) ?  0: menu_id + 1;
+            menu_switch();
         }
     }else if(KEY_START){
         if(key_flag){
             key_flag = 0;
-            switch(Menu_id){
-                case 100:
-                    racing_init();
+            switch(menu_id){
+                case 1:
+                    mine_init();
                     return;
                     break;
-                case 110:
+                case 0:
                     about_init();
                     return;
                     break;
             }
         }
     }else if(KEY_EXIT){
-        if(key_flag){
-            menu_init();
-            key_flag = 0;
-            return;
-        }
+        key_flag = 0;
+
+        menu_id = MENU_COUNT - 1;
+        menu_switch();
     }else{
         key_flag = 1;
     }

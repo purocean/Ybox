@@ -12,7 +12,7 @@
 #include "../menu/menu.h"
 
 void about_init(void){
-    Menu_id = 900;
+    Func_id = ABOUT;
     LCD_clear();
 }
 
@@ -21,8 +21,9 @@ void about(void){
 
     if(KEY_EXIT){
         if(key_flag){
-            menu_init();
             key_flag = 0;
+
+            menu_init();
             return;
         }
     }else{

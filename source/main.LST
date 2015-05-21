@@ -1,9 +1,9 @@
-C51 COMPILER V9.00   MAIN                                                                  05/17/2015 19:37:51 PAGE 1   
+C51 COMPILER V9.00   MAIN                                                                  05/21/2015 16:32:41 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN main.OBJ
-COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c OPTIMIZE(9,SPEED) BROWSE DEBUG OBJECTEXTEND
 
 line level    source
 
@@ -20,55 +20,58 @@ line level    source
   11          #include "inc/lcd/nokia_5110.h"
   12          #include "menu/menu.h"
   13          #include "about/about.h"
-  14          #include "racing/racing.h"
+  14          #include "mine/mine.h"
   15          
-  16          /**
-  17           * 菜单 ID
-  18           * 100-199 分配给主菜单，一级子项为 1x0， 二级 1xy
-  19           * 200-299 分配给赛车游戏
-  20          **/
-  21          unsigned int Menu_id;
-  22          
-  23          // 初始化工作
-  24          void init(void);
-  25          
-  26          void main(void){
-  27   1          init();
-  28   1      
-  29   1          for(;;){
-  30   2              // 扫描按键
-  31   2              event_scan_key();
-  32   2      
-  33   2      
-  34   2              if(200 <= Menu_id && Menu_id < 300){
-  35   3                  racing();
-  36   3              }else if(100 <= Menu_id && Menu_id < 200){
-  37   3                  menu();
-  38   3              }else if(900 <= Menu_id && Menu_id < 1000){
-  39   3                  about();
-  40   3              }
-  41   2      
-  42   2              LCD_draw_int_6x8(42, 0,P2);
-  43   2              LCD_draw_int_6x8(0, 0, Menu_id);
-  44   2          }
-  45   1      }
-  46          
-  47          void init(void){
-  48   1          timer_init();
-  49   1          LCD_init();
-  50   1          LCD_clear();
-  51   1          menu_init();
-  52   1      }
+  16          // 初始化工作
+  17          void init(void);
+  18          
+  19          void main(void){
+  20   1          init();
+  21   1      
+  22   1          for(;;){
+  23   2              // 扫描按键
+  24   2              event_scan_key();
+  25   2      
+  26   2              switch(Func_id){
+  27   3                  case 2:
+  28   3                      mine();
+  29   3                      break;
+  30   3                  case 1:
+  31   3                      about();
+  32   3                      break;
+  33   3                  default:
+  34   3                      menu();
+  35   3              }
+  36   2      
+  37   2              // if(300 <= Menu_id && Menu_id < 400){
+  38   2              //     mine();
+  39   2              // }else if(200 <= Menu_id && Menu_id < 300){
+  40   2              //     about();
+  41   2              // }else if(100 <= Menu_id && Menu_id < 200){
+  42   2              //     menu();
+  43   2              // }
+  44   2      
+  45   2              // LCD_draw_int_6x8(42, 0,P2);
+  46   2              // LCD_draw_int_6x8(0, 0, Menu_id);
+  47   2          }
+  48   1      }
+  49          
+  50          void init(void){
+  51   1          timer_init();
+  52   1          LCD_init();
+  53   1          LCD_clear();
+  54   1          menu_init();
+  55   1      }
+C51 COMPILER V9.00   MAIN                                                                  05/21/2015 16:32:41 PAGE 2   
+
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-C51 COMPILER V9.00   MAIN                                                                  05/17/2015 19:37:51 PAGE 2   
-
-   CODE SIZE        =    130    ----
+   CODE SIZE        =     41    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      2    ----
+   DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

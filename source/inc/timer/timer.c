@@ -9,6 +9,7 @@
 #include "timer.h"
 
 bit Timer_T0_flag = 0;
+unsigned long int Timer_stamp_ms = 0;
 
 void timer_init(void){
     TMOD = 0x01; // 设置定时器 0 为非门控制方式 1
@@ -23,8 +24,8 @@ unsigned char timer_delay_ms(unsigned long ms){
     while(ms > 0){
         if(Timer_T0_flag){
             timer_init();
+            Timer_T0_flag = 0;
             --ms;
-            Timer_T0_flag =0;
         }
     }
 
@@ -33,5 +34,6 @@ unsigned char timer_delay_ms(unsigned long ms){
 
 void timer_ms_interrupt(void) interrupt 1 using 1{
     Timer_T0_flag = 1;
+    ++Timer_stamp_ms;
     timer_init();
 }

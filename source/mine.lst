@@ -1,0 +1,247 @@
+C51 COMPILER V9.00   MINE                                                                  05/21/2015 16:32:42 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MINE
+OBJECT MODULE PLACED IN mine.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE mine\mine.c OPTIMIZE(9,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\mine.lst) O
+                    -BJECT(mine.obj)
+
+line level    source
+
+   1          /* 扫雷游戏
+   2           * 洋子
+   3           * purocean@gmail.com
+   4           * 2015年5月17日00:16:46
+   5           */
+   6          
+   7          #include <reg51.h>
+   8          #include <stdlib.h>
+   9          #include "../inc/event/event.h"
+  10          #include "../inc/lcd/nokia_5110.h"
+  11          #include "../inc/timer/timer.h"
+  12          #include "mine.h"
+  13          #include "mine_data.h"
+  14          #include "../menu/menu.h"
+  15          
+  16          unsigned char     mine_map[MINE_COL][MINE_ROW];
+  17          unsigned char     mine_count, mine_notdig_count;
+  18          unsigned char     mine_x, mine_y;
+  19          unsigned      int mine_time;
+  20          unsigned long int mine_start_time;
+  21          bit mine_isover;
+  22          bit mine_success;
+  23          
+  24          void mine_init(void){
+  25   1          unsigned char x, y;
+  26   1          Func_id = MINE;
+  27   1      
+  28   1          mine_notdig_count = MINE_ROW * MINE_COL;
+  29   1          mine_count = 0;
+  30   1          mine_start_time = Timer_stamp_ms;
+  31   1          mine_time = 0;
+  32   1          mine_x = 0;
+  33   1          mine_y = 0;
+  34   1          mine_isover = 0;
+  35   1          mine_success = 0;
+  36   1      
+  37   1          srand(Timer_stamp_ms);
+  38   1          for(x = 0; x < MINE_COL; ++x){
+  39   2              for(y = 0; y < MINE_ROW; ++y){
+  40   3                  if((rand() % 8 == 1)){ // 大于 100 表示是一个雷, 1 / 8 概率
+  41   4                      mine_map[x][y] = 110;
+  42   4                      ++mine_count;
+  43   4                  }else{
+  44   4                      mine_map[x][y] = 10;
+  45   4                  }
+  46   3              }
+  47   2          }
+  48   1      
+  49   1          LCD_clear();
+  50   1          mine_draw();
+  51   1      }
+  52          
+  53          bit mine_out_of_range(signed char x, signed char y){
+  54   1          if(x < 0 || MINE_COL - 1 < x || y < 0 || MINE_ROW - 1 < y){
+C51 COMPILER V9.00   MINE                                                                  05/21/2015 16:32:42 PAGE 2   
+
+  55   2              return 1;
+  56   2          }
+  57   1      
+  58   1          return 0;
+  59   1      }
+  60          
+  61          bit mine_is_mine(signed char x, signed char y){
+  62   1          if(mine_map[x][y] >= 100){
+  63   2              return 1;
+  64   2          }
+  65   1      
+  66   1          return 0;
+  67   1      }
+  68          
+  69          void mine_set_state(signed char x, signed char y, unsigned char state){
+  70   1          mine_map[x][y] = (mine_map[x][y] / 100) * 100 + state;
+  71   1      }
+  72          
+  73          unsigned char mine_get_state(signed char x, signed char y){
+  74   1          return mine_map[x][y] % 100;
+  75   1      }
+  76          
+  77          void mine_dig(signed char x, signed char y) compact reentrant{
+  78   1          signed char i, j;
+  79   1          unsigned char count = 0;
+  80   1      
+  81   1          if(mine_isover || mine_out_of_range(x, y) || mine_get_state(x, y) != 10){
+  82   2              return;
+  83   2          }
+  84   1      
+  85   1          for(i = x - 1; i <= x + 1; ++i){
+  86   2              for(j = y - 1; j <= y + 1; ++j){
+  87   3                  if(mine_out_of_range(i, j) || (i == x && j == y)){
+  88   4                      continue;
+  89   4                  }
+  90   3      
+  91   3                  if(mine_is_mine(i, j)){
+  92   4                      ++count;
+  93   4                  }
+  94   3              }
+  95   2          }
+  96   1      
+  97   1          mine_set_state(x, y, count);
+  98   1      
+  99   1          --mine_notdig_count;
+ 100   1          if(mine_notdig_count == mine_count){ // 扫雷完成
+ 101   2              mine_isover = 1;
+ 102   2              mine_success = 1;
+ 103   2              mine_time = (Timer_stamp_ms  - mine_start_time) / 1000;
+ 104   2              mine_draw_div();
+ 105   2              return;
+ 106   2          }
+ 107   1      
+ 108   1          if(count > 0){
+ 109   2              return;
+ 110   2          }
+ 111   1      
+ 112   1          for(i = x - 1; i <= x + 1; ++i){
+ 113   2              for(j = y - 1; j <= y + 1; ++j){
+ 114   3                  mine_dig(i, j);
+ 115   3              }
+ 116   2          }
+C51 COMPILER V9.00   MINE                                                                  05/21/2015 16:32:42 PAGE 3   
+
+ 117   1      }
+ 118          
+ 119          void mine_draw_div(void){
+ 120   1          unsigned char x, y;
+ 121   1          unsigned char state = 0;
+ 122   1      
+ 123   1          for(x = 0; x < MINE_COL; ++x){
+ 124   2              for(y = 0; y < MINE_ROW; ++y){
+ 125   3                  state = mine_map[x][y] % 100;
+ 126   3      
+ 127   3                  if(x == mine_x && y == mine_y){
+ 128   4                      state += 11;
+ 129   4                  }
+ 130   3      
+ 131   3                  LCD_draw_pic(x * 8, y, 8, 8, mine_img_div[state]);
+ 132   3      
+ 133   3                  if(mine_isover && mine_is_mine(x, y)){
+ 134   4                      LCD_draw_pic(x * 8, y, 8, 8, mine_img_div[22]);
+ 135   4                  }
+ 136   3              }
+ 137   2          }
+ 138   1      }
+ 139          
+ 140          void mine_draw(void){
+ 141   1          if(mine_isover){
+ 142   2              if(mine_success){
+ 143   3                  LCD_draw_string_ascil_6x8(0, 2, "Time:");
+ 144   3                  LCD_draw_int_6x8(31, 2, mine_time);
+ 145   3                  // LCD_draw_string_ascil_6x8(0, 3, "Best:10:10:10");
+ 146   3                  // LCD_draw_string_ascil_6x8(0, 3, "  Press START  ");
+ 147   3              }else{
+ 148   3                  LCD_draw_string_ascil_6x8(0, 2, ":( Press START ");
+ 149   3              }
+ 150   2              return;
+ 151   2          }
+ 152   1      
+ 153   1          mine_draw_div();
+ 154   1      }
+ 155          
+ 156          void mine(void){
+ 157   1          static bit key_flag = 1;
+ 158   1      
+ 159   1          if(KEY_B){
+ 160   2              if(key_flag){
+ 161   3                  key_flag = 0;
+ 162   3      
+ 163   3                  if(mine_get_state(mine_x, mine_y) == 10){
+ 164   4                      mine_set_state(mine_x, mine_y, 9);;
+ 165   4                  }else if(mine_get_state(mine_x, mine_y) == 9){
+ 166   4                      mine_set_state(mine_x, mine_y, 10);
+ 167   4                  }
+ 168   3              }
+ 169   2          }else if(KEY_A){
+ 170   2              if(key_flag){
+ 171   3                  key_flag = 0;
+ 172   3      
+ 173   3                  if(mine_is_mine(mine_x, mine_y)){
+ 174   4                      mine_isover = 1;
+ 175   4                      mine_draw_div();
+ 176   4                  }else{
+ 177   4                      mine_dig(mine_x, mine_y);
+ 178   4                  }
+C51 COMPILER V9.00   MINE                                                                  05/21/2015 16:32:42 PAGE 4   
+
+ 179   3              }
+ 180   2          }else if(KEY_EXIT){
+ 181   2              if(key_flag){
+ 182   3                  key_flag = 0;
+ 183   3                  menu_init();
+ 184   3                  return;
+ 185   3              }
+ 186   2          }else if(KEY_START){
+ 187   2              if(key_flag){
+ 188   3                  key_flag = 0;
+ 189   3                  mine_init();
+ 190   3                  return;
+ 191   3              }
+ 192   2          }else if(KEY_LEFT){
+ 193   2              if(key_flag){
+ 194   3                  key_flag = 0;
+ 195   3                  mine_x = (0 < mine_x) ? mine_x - 1 : MINE_COL - 1;
+ 196   3              }
+ 197   2          }else if(KEY_RIGHT){
+ 198   2              if(key_flag){
+ 199   3                  key_flag = 0;
+ 200   3                  mine_x = (mine_x < MINE_COL - 1) ? mine_x + 1 : 0;
+ 201   3              }
+ 202   2          }else if(KEY_UPWARD){
+ 203   2              if(key_flag){
+ 204   3                  key_flag = 0;
+ 205   3                  mine_y = (0 < mine_y) ? mine_y - 1 : MINE_ROW - 1;
+ 206   3              }
+ 207   2          }else if(KEY_DOWNWARD){
+ 208   2              if(key_flag){
+ 209   3                  key_flag = 0;
+ 210   3                  mine_y = (mine_y < MINE_ROW - 1) ? mine_y + 1 : 0;
+ 211   3              }
+ 212   2          }else{
+ 213   2              key_flag = 1;
+ 214   2          }
+ 215   1      
+ 216   1          mine_draw();
+ 217   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1032    ----
+   CONSTANT SIZE    =    206    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     70       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      3    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

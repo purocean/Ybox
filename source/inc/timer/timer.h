@@ -12,6 +12,7 @@
 // #define TIMER_MS_COUNT_NUM 2000 // 一毫秒计数次数
 
 extern bit Timer_T0_flag; // T0 中断标志
+extern unsigned long int Timer_stamp_ms; // 系统启动时间，毫秒
 
 // 定时器初始化
 void timer_init(void);

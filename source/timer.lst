@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   TIMER                                                                 05/17/2015 19:37:51 PAGE 1   
+C51 COMPILER V9.00   TIMER                                                                 05/21/2015 16:32:41 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TIMER
 OBJECT MODULE PLACED IN timer.obj
-COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE inc\timer\timer.c BROWSE DEBUG OBJECTEXTEND PRINT(.\timer.lst) OBJECT(timer
-                    -.obj)
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE inc\timer\timer.c OPTIMIZE(9,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\timer
+                    -.lst) OBJECT(timer.obj)
 
 line level    source
 
@@ -19,40 +19,42 @@ line level    source
    9          #include "timer.h"
   10          
   11          bit Timer_T0_flag = 0;
-  12          
-  13          void timer_init(void){
-  14   1          TMOD = 0x01; // 设置定时器 0 为非门控制方式 1
-  15   1          TH0  = (65536 - TIMER_MS_COUNT_NUM) / 256; // 装载计数器初值
-  16   1          TL0  = (65536 - TIMER_MS_COUNT_NUM) % 256;
-  17   1          EA   = 1; // CPU 中断开放
-  18   1          ET0  = 1; // 开放 T/CO
-  19   1          TR0  = 1; // 启动 T/C0
-  20   1      }
-  21          
-  22          unsigned char timer_delay_ms(unsigned long ms){
-  23   1          while(ms > 0){
-  24   2              if(Timer_T0_flag){
-  25   3                  timer_init();
-  26   3                  --ms;
-  27   3                  Timer_T0_flag =0;
-  28   3              }
-  29   2          }
-  30   1      
-  31   1          return 1;
-  32   1      }
-  33          
-  34          void timer_ms_interrupt(void) interrupt 1 using 1{
-  35   1          Timer_T0_flag = 1;
-  36   1          timer_init();
-  37   1      }
+  12          unsigned long int Timer_stamp_ms = 0;
+  13          
+  14          void timer_init(void){
+  15   1          TMOD = 0x01; // 设置定时器 0 为非门控制方式 1
+  16   1          TH0  = (65536 - TIMER_MS_COUNT_NUM) / 256; // 装载计数器初值
+  17   1          TL0  = (65536 - TIMER_MS_COUNT_NUM) % 256;
+  18   1          EA   = 1; // CPU 中断开放
+  19   1          ET0  = 1; // 开放 T/CO
+  20   1          TR0  = 1; // 启动 T/C0
+  21   1      }
+  22          
+  23          unsigned char timer_delay_ms(unsigned long ms){
+  24   1          while(ms > 0){
+  25   2              if(Timer_T0_flag){
+  26   3                  timer_init();
+  27   3                  Timer_T0_flag = 0;
+  28   3                  --ms;
+  29   3              }
+  30   2          }
+  31   1      
+  32   1          return 1;
+  33   1      }
+  34          
+  35          void timer_ms_interrupt(void) interrupt 1 using 1{
+  36   1          Timer_T0_flag = 1;
+  37   1          ++Timer_stamp_ms;
+  38   1          timer_init();
+  39   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     86    ----
+   CODE SIZE        =    115    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----       4
+   DATA SIZE        =      4       4
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      1    ----
 END OF MODULE INFORMATION.
