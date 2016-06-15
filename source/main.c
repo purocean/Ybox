@@ -19,6 +19,11 @@ void init(void);
 void main(void){
     init();
 
+    //载入启动画面
+    about();
+    timer_delay_ms(1500);
+    menu_init();
+
     for(;;){
         // 扫描按键
         event_scan_key();
@@ -51,5 +56,4 @@ void init(void){
     timer_init();
     LCD_init();
     LCD_clear();
-    menu_init();
 }

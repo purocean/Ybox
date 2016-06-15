@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                        05/21/2015  16:32:42  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                        06/15/2016  16:20:12  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -59,7 +59,7 @@ LINK MAP OF MODULE:  ybox (?C_STARTUP)
             CODE    0000H     0003H     ABSOLUTE     
             CODE    0003H     0006H     UNIT         ?PR?ABOUT_INIT?ABOUT
                     0009H     0002H                  *** GAP ***
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 2
 
 
             CODE    000BH     0003H     ABSOLUTE     
@@ -85,25 +85,25 @@ LINK MAP OF MODULE:  ybox (?C_STARTUP)
             CODE    0E58H     0040H     UNIT         ?PR?MINE
             CODE    0E98H     0038H     UNIT         ?PR?_LCD_DRAW_CHAR_6X8?NOKIA_5110
             CODE    0ED0H     0034H     UNIT         ?PR?MINE_DRAW?MINE
-            CODE    0F04H     0029H     UNIT         ?PR?_MINE_OUT_OF_RANGE?MINE
-            CODE    0F2DH     0027H     UNIT         ?PR?LCD_CLEAR?NOKIA_5110
-            CODE    0F54H     0026H     UNIT         ?PR?_LCD_DRAW_STRING_ASCIL_6X8?NOKIA_5110
-            CODE    0F7AH     0025H     UNIT         ?C_INITSEG
-            CODE    0F9FH     0024H     UNIT         ?PR?_LCD_WRITE_BYTE?NOKIA_5110
-            CODE    0FC3H     0023H     UNIT         ?PR?_LCD_SET_POS?NOKIA_5110
-            CODE    0FE6H     0023H     UNIT         ?PR?TIMER_MS_INTERRUPT?TIMER
-            CODE    1009H     0023H     UNIT         ?PR?ABOUT?ABOUT
-            CODE    102CH     001DH     UNIT         ?PR?MAIN?MAIN
-            CODE    1049H     001BH     UNIT         ?PR?MENU
-            CODE    1064H     0015H     UNIT         ?PR?_STRLEN?STRLEN
-            CODE    1079H     0012H     UNIT         ?PR?NOKIA_5110
-            CODE    108BH     0010H     UNIT         ?PR?TIMER_INIT?TIMER
-            CODE    109BH     0010H     UNIT         ?PR?_MINE_IS_MINE?MINE
-            CODE    10ABH     000EH     UNIT         ?PR?_LCD_DELAY_AWHILE?NOKIA_5110
-            CODE    10B9H     000EH     UNIT         ?PR?_MINE_SET_STATE?MINE
-            CODE    10C7H     000CH     UNIT         ?PR?INIT?MAIN
-            CODE    10D3H     000AH     UNIT         ?PR?_MINE_GET_STATE?MINE
-            CODE    10DDH     0009H     UNIT         ?PR?MENU_INIT?MENU
+            CODE    0F04H     002EH     UNIT         ?PR?MAIN?MAIN
+            CODE    0F32H     0029H     UNIT         ?PR?_MINE_OUT_OF_RANGE?MINE
+            CODE    0F5BH     0027H     UNIT         ?PR?LCD_CLEAR?NOKIA_5110
+            CODE    0F82H     0026H     UNIT         ?PR?_LCD_DRAW_STRING_ASCIL_6X8?NOKIA_5110
+            CODE    0FA8H     0025H     UNIT         ?C_INITSEG
+            CODE    0FCDH     0024H     UNIT         ?PR?_LCD_WRITE_BYTE?NOKIA_5110
+            CODE    0FF1H     0023H     UNIT         ?PR?_LCD_SET_POS?NOKIA_5110
+            CODE    1014H     0023H     UNIT         ?PR?TIMER_MS_INTERRUPT?TIMER
+            CODE    1037H     0023H     UNIT         ?PR?ABOUT?ABOUT
+            CODE    105AH     001BH     UNIT         ?PR?MENU
+            CODE    1075H     0015H     UNIT         ?PR?_STRLEN?STRLEN
+            CODE    108AH     0012H     UNIT         ?PR?NOKIA_5110
+            CODE    109CH     0010H     UNIT         ?PR?TIMER_INIT?TIMER
+            CODE    10ACH     0010H     UNIT         ?PR?_MINE_IS_MINE?MINE
+            CODE    10BCH     000EH     UNIT         ?PR?_LCD_DELAY_AWHILE?NOKIA_5110
+            CODE    10CAH     000EH     UNIT         ?PR?_MINE_SET_STATE?MINE
+            CODE    10D8H     000AH     UNIT         ?PR?_MINE_GET_STATE?MINE
+            CODE    10E2H     0009H     UNIT         ?PR?INIT?MAIN
+            CODE    10EBH     0009H     UNIT         ?PR?MENU_INIT?MENU
 
 
 
@@ -119,19 +119,20 @@ SEGMENT                                            DATA_GROUP
 
 ?PR?MAIN?MAIN                                    -----    -----
   +--> ?PR?INIT?MAIN
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 3
 
 
+  +--> ?PR?ABOUT?ABOUT
+  +--> ?PR?_TIMER_DELAY_MS?TIMER
+  +--> ?PR?MENU_INIT?MENU
   +--> ?PR?EVENT_SCAN_KEY?EVENT
   +--> ?PR?MINE?MINE
-  +--> ?PR?ABOUT?ABOUT
   +--> ?PR?MENU?MENU
 
 ?PR?INIT?MAIN                                    -----    -----
   +--> ?PR?TIMER_INIT?TIMER
   +--> ?PR?LCD_INIT?NOKIA_5110
   +--> ?PR?LCD_CLEAR?NOKIA_5110
-  +--> ?PR?MENU_INIT?MENU
 
 ?PR?LCD_INIT?NOKIA_5110                          -----    -----
   +--> ?PR?_LCD_DELAY_AWHILE?NOKIA_5110
@@ -144,6 +145,11 @@ SEGMENT                                            DATA_GROUP
 
 ?PR?_LCD_SET_POS?NOKIA_5110                      001CH    0001H
   +--> ?PR?_LCD_WRITE_BYTE?NOKIA_5110
+
+?PR?ABOUT?ABOUT                                  -----    -----
+  +--> ?PR?MENU_INIT?MENU
+  +--> ?CO?ABOUT
+  +--> ?PR?_LCD_DRAW_PIC?NOKIA_5110
 
 ?PR?MENU_INIT?MENU                               -----    -----
   +--> ?PR?LCD_CLEAR?NOKIA_5110
@@ -171,17 +177,17 @@ SEGMENT                                            DATA_GROUP
   +--> ?CO?NOKIA_5110
   +--> ?PR?_LCD_WRITE_BYTE?NOKIA_5110
 
+?PR?_TIMER_DELAY_MS?TIMER                        0008H    0004H
+  +--> ?PR?TIMER_INIT?TIMER
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 4
+
+
+
 ?PR?EVENT_SCAN_KEY?EVENT                         -----    -----
   +--> ?PR?_TIMER_DELAY_MS?TIMER
 
-?PR?_TIMER_DELAY_MS?TIMER                        0008H    0004H
-  +--> ?PR?TIMER_INIT?TIMER
-
 ?PR?MINE?MINE                                    -----    -----
   +--> ?PR?_MINE_GET_STATE?MINE
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 4
-
-
   +--> ?PR?_MINE_SET_STATE?MINE
   +--> ?PR?_MINE_IS_MINE?MINE
   +--> ?PR?MINE_DRAW_DIV?MINE
@@ -230,18 +236,13 @@ SEGMENT                                            DATA_GROUP
   +--> ?PR?NOKIA_5110
   +--> ?PR?_LCD_DRAW_CHAR_6X8?NOKIA_5110
 
-?PR?ABOUT?ABOUT                                  -----    -----
-  +--> ?PR?MENU_INIT?MENU
-  +--> ?CO?ABOUT
-  +--> ?PR?_LCD_DRAW_PIC?NOKIA_5110
-
 ?PR?MENU?MENU                                    -----    -----
   +--> ?PR?MINE_INIT?MINE
   +--> ?PR?ABOUT_INIT?ABOUT
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 5
+
+
   +--> ?PR?MENU_SWITCH?MENU
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 5
-
-
 
 ?PR?ABOUT_INIT?ABOUT                             -----    -----
   +--> ?PR?LCD_CLEAR?NOKIA_5110
@@ -296,34 +297,36 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0090H         PUBLIC        P1
   D:00A0H         PUBLIC        P2
-  C:102CH         PUBLIC        main
-  C:10C7H         PUBLIC        init
+  C:0F04H         PUBLIC        main
+  C:10E2H         PUBLIC        init
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 6
+
+
   -------         PROC          MAIN
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 6
-
-
-  C:102CH         LINE#         19
-  C:102CH         LINE#         20
-  C:102FH         LINE#         22
-  C:102FH         LINE#         24
-  C:1032H         LINE#         26
-  C:103AH         LINE#         27
-  C:103AH         LINE#         28
-  C:103DH         LINE#         29
-  C:103FH         LINE#         30
-  C:103FH         LINE#         31
-  C:1042H         LINE#         32
-  C:1044H         LINE#         33
-  C:1044H         LINE#         34
-  C:1047H         LINE#         35
-  C:1047H         LINE#         47
+  C:0F04H         LINE#         19
+  C:0F04H         LINE#         20
+  C:0F07H         LINE#         23
+  C:0F0AH         LINE#         24
+  C:0F15H         LINE#         25
+  C:0F18H         LINE#         27
+  C:0F18H         LINE#         29
+  C:0F1BH         LINE#         31
+  C:0F23H         LINE#         32
+  C:0F23H         LINE#         33
+  C:0F26H         LINE#         34
+  C:0F28H         LINE#         35
+  C:0F28H         LINE#         36
+  C:0F2BH         LINE#         37
+  C:0F2DH         LINE#         38
+  C:0F2DH         LINE#         39
+  C:0F30H         LINE#         40
+  C:0F30H         LINE#         52
   -------         ENDPROC       MAIN
   -------         PROC          INIT
-  C:10C7H         LINE#         50
-  C:10C7H         LINE#         51
-  C:10CAH         LINE#         52
-  C:10CDH         LINE#         53
-  C:10D0H         LINE#         54
+  C:10E2H         LINE#         55
+  C:10E2H         LINE#         56
+  C:10E5H         LINE#         57
+  C:10E8H         LINE#         58
   -------         ENDPROC       INIT
   -------         ENDMOD        MAIN
 
@@ -331,37 +334,37 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0090H         PUBLIC        P1
   C:0AC0H         PUBLIC        _LCD_draw_pic
-  C:10ABH         PUBLIC        _LCD_delay_awhile
-  C:0F54H         PUBLIC        _LCD_draw_string_ascil_6x8
+  C:10BCH         PUBLIC        _LCD_delay_awhile
+  C:0F82H         PUBLIC        _LCD_draw_string_ascil_6x8
   C:0E98H         PUBLIC        _LCD_draw_char_6x8
   B:0090H.0       PUBLIC        LCD_RST
   B:0090H.4       PUBLIC        SCLK
   B:0090H.3       PUBLIC        SDIN
-  C:0FC3H         PUBLIC        _LCD_set_pos
+  C:0FF1H         PUBLIC        _LCD_set_pos
   B:0090H.2       PUBLIC        LCD_DC
   B:0090H.1       PUBLIC        LCD_CE
-  C:0F2DH         PUBLIC        LCD_clear
+  C:0F5BH         PUBLIC        LCD_clear
   C:0BB7H         PUBLIC        _LCD_draw_int_6x8
   C:0DD7H         PUBLIC        LCD_init
   C:000EH         PUBLIC        font_ascii_6x8
-  C:0F9FH         PUBLIC        _LCD_write_byte
-  C:1079H         SYMBOL        Com0033
-  C:1079H         SYMBOL        L?0052
-  C:1079H         SYMBOL        L?0053
-  C:1082H         SYMBOL        L?0055
+  C:0FCDH         PUBLIC        _LCD_write_byte
+  C:108AH         SYMBOL        Com0033
+  C:108AH         SYMBOL        L?0052
+  C:108AH         SYMBOL        L?0053
+  C:1093H         SYMBOL        L?0055
   -------         PROC          COM0033
   -------         ENDPROC       COM0033
   -------         PROC          _LCD_DELAY_AWHILE
   -------         DO            
   D:0006H         SYMBOL        i
   -------         ENDDO         
-  C:10ABH         LINE#         14
-  C:10ABH         LINE#         16
-  C:10B8H         LINE#         17
+  C:10BCH         LINE#         14
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 7
+
+
+  C:10BCH         LINE#         16
+  C:10C9H         LINE#         17
   -------         ENDPROC       _LCD_DELAY_AWHILE
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 7
-
-
   C:0E10H         SYMBOL        L?0054
   -------         PROC          LCD_INIT
   C:0DD7H         LINE#         20
@@ -386,24 +389,24 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   -------         DO            
   D:000AH         SYMBOL        i
   -------         ENDDO         
-  C:0F2DH         LINE#         42
-  C:0F2DH         LINE#         45
-  C:0F33H         LINE#         47
-  C:0F39H         LINE#         48
-  C:0F40H         LINE#         49
-  C:0F53H         LINE#         50
+  C:0F5BH         LINE#         42
+  C:0F5BH         LINE#         45
+  C:0F61H         LINE#         47
+  C:0F67H         LINE#         48
+  C:0F6EH         LINE#         49
+  C:0F81H         LINE#         50
   -------         ENDPROC       LCD_CLEAR
   -------         PROC          _LCD_SET_POS
   D:0007H         SYMBOL        x
   D:001CH         SYMBOL        y
-  C:0FC3H         LINE#         57
-  C:0FC5H         LINE#         58
-  C:0FCBH         LINE#         61
-  C:0FCBH         LINE#         63
-  C:0FD2H         LINE#         66
-  C:0FD2H         LINE#         68
-  C:0FDBH         LINE#         69
-  C:0FE5H         LINE#         70
+  C:0FF1H         LINE#         57
+  C:0FF3H         LINE#         58
+  C:0FF9H         LINE#         61
+  C:0FF9H         LINE#         63
+  C:1000H         LINE#         66
+  C:1000H         LINE#         68
+  C:1009H         LINE#         69
+  C:1013H         LINE#         70
   -------         ENDPROC       _LCD_SET_POS
   -------         PROC          _LCD_DRAW_CHAR_6X8
   D:001CH         SYMBOL        c
@@ -416,21 +419,21 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   C:0EA3H         LINE#         82
   C:0EC6H         LINE#         83
   C:0ECFH         LINE#         84
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 8
+
+
   -------         ENDPROC       _LCD_DRAW_CHAR_6X8
   -------         PROC          _LCD_DRAW_STRING_ASCIL_6X8
   D:0007H         SYMBOL        x
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 8
-
-
   D:0005H         SYMBOL        y
   D:000AH         SYMBOL        s
-  C:0F54H         LINE#         92
-  C:0F5AH         LINE#         93
-  C:0F5DH         LINE#         95
-  C:0F69H         LINE#         96
-  C:0F6CH         LINE#         97
-  C:0F77H         LINE#         98
-  C:0F79H         LINE#         99
+  C:0F82H         LINE#         92
+  C:0F88H         LINE#         93
+  C:0F8BH         LINE#         95
+  C:0F97H         LINE#         96
+  C:0F9AH         LINE#         97
+  C:0FA5H         LINE#         98
+  C:0FA7H         LINE#         99
   -------         ENDPROC       _LCD_DRAW_STRING_ASCIL_6X8
   -------         PROC          _LCD_DRAW_INT_6X8
   D:0007H         SYMBOL        x
@@ -476,12 +479,12 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   C:0AC0H         LINE#         144
   C:0AC6H         LINE#         145
   C:0AC6H         LINE#         149
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 9
+
+
   C:0ACCH         LINE#         150
   C:0AD5H         LINE#         151
   C:0AD7H         LINE#         152
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 9
-
-
   C:0AE1H         LINE#         153
   C:0AE1H         LINE#         155
   C:0AF1H         LINE#         157
@@ -498,25 +501,25 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   -------         DO            
   D:0006H         SYMBOL        i
   -------         ENDDO         
-  C:0F9FH         LINE#         171
-  C:0F9FH         LINE#         173
-  C:0FA1H         LINE#         175
-  C:0FA4H         LINE#         176
-  C:0FA6H         LINE#         177
-  C:0FA8H         LINE#         178
-  C:0FAAH         LINE#         179
-  C:0FAAH         LINE#         181
-  C:0FACH         LINE#         182
-  C:0FB0H         LINE#         183
-  C:0FB2H         LINE#         184
-  C:0FB4H         LINE#         185
-  C:0FB6H         LINE#         186
-  C:0FB6H         LINE#         188
-  C:0FB8H         LINE#         189
-  C:0FBCH         LINE#         190
-  C:0FBEH         LINE#         191
-  C:0FC0H         LINE#         193
-  C:0FC2H         LINE#         194
+  C:0FCDH         LINE#         171
+  C:0FCDH         LINE#         173
+  C:0FCFH         LINE#         175
+  C:0FD2H         LINE#         176
+  C:0FD4H         LINE#         177
+  C:0FD6H         LINE#         178
+  C:0FD8H         LINE#         179
+  C:0FD8H         LINE#         181
+  C:0FDAH         LINE#         182
+  C:0FDEH         LINE#         183
+  C:0FE0H         LINE#         184
+  C:0FE2H         LINE#         185
+  C:0FE4H         LINE#         186
+  C:0FE4H         LINE#         188
+  C:0FE6H         LINE#         189
+  C:0FEAH         LINE#         190
+  C:0FECH         LINE#         191
+  C:0FEEH         LINE#         193
+  C:0FF0H         LINE#         194
   -------         ENDPROC       _LCD_WRITE_BYTE
   -------         ENDMOD        NOKIA_5110
 
@@ -528,21 +531,21 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   C:0CEFH         PUBLIC        menu
   D:001EH         PUBLIC        Func_id
   C:05A4H         PUBLIC        menu_icon
-  C:10DDH         PUBLIC        menu_init
+  C:10EBH         PUBLIC        menu_init
   C:06A4H         PUBLIC        menu_text
   D:001FH         PUBLIC        menu_id
-  C:1049H         SYMBOL        Com001A
-  C:1049H         SYMBOL        L?0027
+  C:105AH         SYMBOL        Com001A
+  C:105AH         SYMBOL        L?0027
   -------         PROC          COM001A
   -------         ENDPROC       COM001A
   -------         PROC          MENU_INIT
-  C:10DDH         LINE#         19
-  C:10DDH         LINE#         20
-  C:10E0H         LINE#         21
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 10
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 10
 
 
-  C:10E3H         LINE#         22
+  C:10EBH         LINE#         19
+  C:10EBH         LINE#         20
+  C:10EEH         LINE#         21
+  C:10F1H         LINE#         22
   -------         ENDPROC       MENU_INIT
   -------         PROC          MENU_SWITCH
   -------         DO            
@@ -596,15 +599,15 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   -------         ENDPROC       MENU
   -------         ENDMOD        MENU
 
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 11
+
+
   -------         MODULE        TIMER
   C:0000H         SYMBOL        _ICE_DUMMY_
   B:00A8H.7       PUBLIC        EA
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 11
-
-
   D:0089H         PUBLIC        TMOD
-  C:0FE6H         PUBLIC        timer_ms_interrupt
-  C:108BH         PUBLIC        timer_init
+  C:1014H         PUBLIC        timer_ms_interrupt
+  C:109CH         PUBLIC        timer_init
   B:00A8H.1       PUBLIC        ET0
   D:008CH         PUBLIC        TH0
   D:0068H         PUBLIC        Timer_stamp_ms
@@ -613,14 +616,14 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   C:0E18H         PUBLIC        _timer_delay_ms
   B:0021H.4       PUBLIC        Timer_T0_flag
   -------         PROC          TIMER_INIT
-  C:108BH         LINE#         14
-  C:108BH         LINE#         15
-  C:108EH         LINE#         16
-  C:1091H         LINE#         17
-  C:1094H         LINE#         18
-  C:1096H         LINE#         19
-  C:1098H         LINE#         20
-  C:109AH         LINE#         21
+  C:109CH         LINE#         14
+  C:109CH         LINE#         15
+  C:109FH         LINE#         16
+  C:10A2H         LINE#         17
+  C:10A5H         LINE#         18
+  C:10A7H         LINE#         19
+  C:10A9H         LINE#         20
+  C:10ABH         LINE#         21
   -------         ENDPROC       TIMER_INIT
   -------         PROC          _TIMER_DELAY_MS
   D:0008H         SYMBOL        ms
@@ -636,11 +639,11 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   C:0E57H         LINE#         33
   -------         ENDPROC       _TIMER_DELAY_MS
   -------         PROC          TIMER_MS_INTERRUPT
-  C:0FE6H         LINE#         35
-  C:0FEAH         LINE#         36
-  C:0FECH         LINE#         37
-  C:1001H         LINE#         38
-  C:1004H         LINE#         39
+  C:1014H         LINE#         35
+  C:1018H         LINE#         36
+  C:101AH         LINE#         37
+  C:102FH         LINE#         38
+  C:1032H         LINE#         39
   -------         ENDPROC       TIMER_MS_INTERRUPT
   -------         ENDMOD        TIMER
 
@@ -656,12 +659,12 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   B:0020H.3       PUBLIC        KEY_UPWARD
   B:00A0H.2       PUBLIC        P_RIGHT
   B:0020H.4       PUBLIC        KEY_DOWNWARD
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 12
+
+
   B:00A0H.6       PUBLIC        P_START
   B:0020H.5       PUBLIC        KEY_RIGHT
   C:0978H         PUBLIC        event_scan_key
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 12
-
-
   B:0020H.6       PUBLIC        KEY_START
   B:00A0H.4       PUBLIC        P_LEFT
   B:00A0H.7       PUBLIC        P_EXIT
@@ -716,16 +719,16 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   C:09FFH         LINE#         70
   C:09FFH         LINE#         71
   -------         ENDPROC       EVENT_SCAN_KEY
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 13
+
+
   -------         ENDMOD        EVENT
 
   -------         MODULE        ABOUT
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 13
-
-
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0090H         PUBLIC        P1
   D:00A0H         PUBLIC        P2
-  C:1009H         PUBLIC        about
+  C:1037H         PUBLIC        about
   C:0003H         PUBLIC        about_init
   C:06AAH         PUBLIC        about_img
   -------         PROC          ABOUT_INIT
@@ -737,17 +740,17 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   -------         DO            
   B:0021H.5       SYMBOL        key_flag
   -------         ENDDO         
-  C:1009H         LINE#         19
-  C:1009H         LINE#         22
-  C:100CH         LINE#         23
-  C:100FH         LINE#         24
-  C:1011H         LINE#         26
-  C:1014H         LINE#         28
-  C:1014H         LINE#         29
-  C:1014H         LINE#         30
-  C:1016H         LINE#         31
-  C:1016H         LINE#         33
-  C:102BH         LINE#         34
+  C:1037H         LINE#         19
+  C:1037H         LINE#         22
+  C:103AH         LINE#         23
+  C:103DH         LINE#         24
+  C:103FH         LINE#         26
+  C:1042H         LINE#         28
+  C:1042H         LINE#         29
+  C:1042H         LINE#         30
+  C:1044H         LINE#         31
+  C:1044H         LINE#         33
+  C:1059H         LINE#         34
   -------         ENDPROC       ABOUT
   -------         ENDMOD        ABOUT
 
@@ -758,7 +761,7 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   D:0022H         PUBLIC        mine_x
   D:0023H         PUBLIC        mine_y
   B:0021H.1       PUBLIC        mine_success
-  C:0F04H         PUBLIC        _mine_out_of_range
+  C:0F32H         PUBLIC        _mine_out_of_range
   D:0024H         PUBLIC        mine_notdig_count
   B:0021H.2       PUBLIC        mine_isover
   C:07CAH         PUBLIC        mine
@@ -769,19 +772,19 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   C:0C29H         PUBLIC        mine_init
   D:0028H         PUBLIC        mine_map
   D:0064H         PUBLIC        mine_start_time
-  C:10D3H         PUBLIC        _mine_get_state
-  C:10B9H         PUBLIC        _mine_set_state
+  C:10D8H         PUBLIC        _mine_get_state
+  C:10CAH         PUBLIC        _mine_set_state
   C:0B42H         PUBLIC        mine_draw_div
   C:08C0H         PUBLIC        mine_img_div
-  C:109BH         PUBLIC        _mine_is_mine
+  C:10ACH         PUBLIC        _mine_is_mine
   C:0E58H         SYMBOL        Com0059
   C:0E58H         SYMBOL        L?0090
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 14
+
+
   C:0E5FH         SYMBOL        L?0091
   C:0E66H         SYMBOL        L?0092
   C:0E68H         SYMBOL        L?0093
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 14
-
-
   C:0E6FH         SYMBOL        L?0094
   C:0E6FH         SYMBOL        L?0095
   C:0E76H         SYMBOL        L?0096
@@ -822,40 +825,40 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   -------         PROC          _MINE_OUT_OF_RANGE
   D:0007H         SYMBOL        x
   D:0005H         SYMBOL        y
-  C:0F04H         LINE#         53
-  C:0F04H         LINE#         54
-  C:0F29H         LINE#         55
-  C:0F2BH         LINE#         56
-  C:0F2BH         LINE#         58
-  C:0F2CH         LINE#         59
+  C:0F32H         LINE#         53
+  C:0F32H         LINE#         54
+  C:0F57H         LINE#         55
+  C:0F59H         LINE#         56
+  C:0F59H         LINE#         58
+  C:0F5AH         LINE#         59
   -------         ENDPROC       _MINE_OUT_OF_RANGE
   -------         PROC          _MINE_IS_MINE
   D:0007H         SYMBOL        x
   D:0005H         SYMBOL        y
-  C:109BH         LINE#         61
-  C:109BH         LINE#         62
-  C:10A7H         LINE#         63
-  C:10A9H         LINE#         64
-  C:10A9H         LINE#         66
-  C:10AAH         LINE#         67
+  C:10ACH         LINE#         61
+  C:10ACH         LINE#         62
+  C:10B8H         LINE#         63
+  C:10BAH         LINE#         64
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 15
+
+
+  C:10BAH         LINE#         66
+  C:10BBH         LINE#         67
   -------         ENDPROC       _MINE_IS_MINE
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 15
-
-
   -------         PROC          _MINE_SET_STATE
   D:0007H         SYMBOL        x
   D:0005H         SYMBOL        y
   D:0003H         SYMBOL        state
-  C:10B9H         LINE#         69
-  C:10B9H         LINE#         70
-  C:10C6H         LINE#         71
+  C:10CAH         LINE#         69
+  C:10CAH         LINE#         70
+  C:10D7H         LINE#         71
   -------         ENDPROC       _MINE_SET_STATE
   -------         PROC          _MINE_GET_STATE
   D:0007H         SYMBOL        x
   D:0005H         SYMBOL        y
-  C:10D3H         LINE#         73
-  C:10D3H         LINE#         74
-  C:10DCH         LINE#         75
+  C:10D8H         LINE#         73
+  C:10D8H         LINE#         74
+  C:10E1H         LINE#         75
   -------         ENDPROC       _MINE_GET_STATE
   -------         PROC          _?MINE_DIG
   p:0003H         SYMBOL        x
@@ -896,12 +899,12 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   C:057CH         LINE#         116
   C:0583H         LINE#         117
   -------         ENDPROC       _?MINE_DIG
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 16
+
+
   -------         PROC          MINE_DRAW_DIV
   -------         DO            
   D:000AH         SYMBOL        x
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 16
-
-
   D:000BH         SYMBOL        y
   D:000CH         SYMBOL        state
   -------         ENDDO         
@@ -956,12 +959,12 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   C:0814H         LINE#         175
   C:0817H         LINE#         176
   C:081AH         LINE#         177
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 17
+
+
   C:0821H         LINE#         178
   C:0821H         LINE#         179
   C:0821H         LINE#         180
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 17
-
-
   C:0827H         LINE#         181
   C:082AH         LINE#         182
   C:082CH         LINE#         183
@@ -1016,11 +1019,11 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   -------         ENDMOD        ?C?SIDIV
 
   -------         MODULE        ?C?ULDIV
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/15/2016  16:20:12  PAGE 18
+
+
   C:0300H         PUBLIC        ?C?ULDIV
   -------         ENDMOD        ?C?ULDIV
-
-BL51 BANKED LINKER/LOCATER V6.22                                                      05/21/2015  16:32:42  PAGE 18
-
 
   -------         MODULE        ?C?SLDIV
   C:0D93H         PUBLIC        ?C?SLDIV
@@ -1045,12 +1048,12 @@ SYMBOL TABLE OF MODULE:  ybox (?C_STARTUP)
   -------         ENDMOD        RAND
 
   -------         MODULE        STRLEN
-  C:1064H         PUBLIC        _STRLEN
+  C:1075H         PUBLIC        _STRLEN
   -------         ENDMOD        STRLEN
 
   -------         MODULE        ?C?UIDIV
   C:03B1H         PUBLIC        ?C?UIDIV
   -------         ENDMOD        ?C?UIDIV
 
-Program Size: data=113.6 xdata=0 code=4324
+Program Size: data=113.6 xdata=0 code=4338
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
