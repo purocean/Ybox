@@ -1,5 +1,8 @@
+
 # Ybox
 用 51 单片机做的掌机
+
+> 视频：https://www.bilibili.com/video/BV1dy4y1r7Gf
 
 ## 主要元件
 1. 单排排针若干
